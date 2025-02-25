@@ -14,10 +14,10 @@ router.post("/register", async (req, res) => {
   const users = readUsers();
 
   if (users.some((user) => user.username === username)) {
-    return res.send(400).json({ message: "Username sudah terdaftar" });
+    return res.status(400).json({ message: "Username sudah terdaftar" });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 6);
+  const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = { id: users.length + 1, username, password: hashedPassword };
   users.push(newUser);
   writeUsers(users);
@@ -46,4 +46,4 @@ router.post("/login", async (req, res) => {
   res.json({ message: "Login berhasil", token });
 });
 
-module.exports = { router };
+module.exports = router;
