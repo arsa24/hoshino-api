@@ -1,13 +1,11 @@
 const fs = require("fs");
 
-const dataPath = "./users.json";
-
-function readUsers() {
+function readUsers(dataPath) {
   const data = fs.readdirSync(dataPath, "utf8");
   return data;
 }
 
-function writeUsers(user) {
+function writeUsers(dataPath, user) {
   fs.writeFileSync(dataPath, JSON.stringify(user, null, 2), "utf8");
 }
 

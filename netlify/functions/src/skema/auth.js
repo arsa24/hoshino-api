@@ -11,7 +11,7 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
-  const users = readUsers();
+  const users = readUsers("./users.json");
 
   if (users.some((user) => user.username === username)) {
     return res.status(400).json({ message: "Username sudah terdaftar" });
@@ -20,14 +20,14 @@ router.post("/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = { id: users.length + 1, username, password: hashedPassword };
   users.push(newUser);
-  writeUsers(users);
+  writeUsers("./users.json", users);
 
   res.json({ message: "User berhasil didaftarkan" });
 });
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  const users = readUsers();
+  const users = readUsers("./users.json");
 
   const user = users.find((u) => u.username === username);
   if (!user) {
