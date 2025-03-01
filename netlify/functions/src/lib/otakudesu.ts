@@ -65,24 +65,20 @@ export class Otakudesu {
 
   async downloadAllEpisodes(url: string): Promise<DownloadAllEpisodes[]> {
     const $ = await fetchWebsite(url);
-    const promises = $("div.episodelist")
-      .eq(1)
-      .find("ul li")
-      .map((i: number, e: any) => {
-        const episodeUrl = $(e).find("span a").attr("href")?.trim() ?? "";
-        const title = $(e).find("span a").text().trim();
+    const result: DownloadAllEpisodes[] = [];
 
-        return this.downloadEpisode(episodeUrl).then((downloads) => ({
-          index: i,
-          data: { title, downloads },
-        }));
-      })
-      .get();
+    const items = $("div.episodelist").eq(1).find("ul li").toArray();
+    for (const [i, e] of items.entries()) {
+      const episodeUrl = $(e).find("span a").attr("href")?.trim() ?? "";
+      const title = $(e).find("span a").text().trim();
 
-    const data = await Promise.all(promises);
-    const result: DownloadAllEpisodes[] = data
-      .sort((a, b) => a.index - b.index)
-      .map((item) => item.data);
+      if (episodeUrl) {
+        const downloads = await this.downloadEpisode(episodeUrl);
+        result.push({ title, downloads });
+      } else {
+        console.error(`Invalid episode URL at index ${i}`);
+      }
+    }
     return result;
   }
 
