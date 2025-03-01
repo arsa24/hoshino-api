@@ -21,8 +21,8 @@ api.get("/api/otakudesu", async (req: any, res: any) => {
 
 api.get("/api/otakudesu/download", async (req: any, res: any) => {
   const { url } = req.query;
-  const download = await otakudesu.downloadAllEpisodes(url);
   if (url) {
+    const download = await otakudesu.downloadAllEpisodes(url);
     res.json({
       download,
     });
@@ -30,7 +30,7 @@ api.get("/api/otakudesu/download", async (req: any, res: any) => {
     res.json({
       msg: "Harap masukan url",
       contoh:
-        "/api/otakudesu/download?url=https://otakudesu.cloud/anime/maou-gakuin-s2-p2-sub-indo&resolusi=420p",
+        "/api/otakudesu/download?url=https://otakudesu.cloud/anime/maou-gakuin-s2-p2-sub-indo",
     });
   }
 });
