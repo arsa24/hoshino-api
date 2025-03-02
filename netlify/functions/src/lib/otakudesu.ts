@@ -1,3 +1,4 @@
+import { otakudesuHeader } from "../utils/constant";
 import { fetchWebsite } from "../utils/fetch_website";
 
 export class Otakudesu {
@@ -64,7 +65,7 @@ export class Otakudesu {
   }
 
   async downloadAllEpisodes(url: string): Promise<DownloadAllEpisodes[]> {
-    const $ = await fetchWebsite(url);
+    const $ = await fetchWebsite(url, {}, otakudesuHeader);
     const result: DownloadAllEpisodes[] = [];
 
     const items = $("div.episodelist").eq(1).find("ul li").toArray();
@@ -84,7 +85,7 @@ export class Otakudesu {
 
   async downloadEpisode(url: string): Promise<DownloadEpisode[]> {
     let result: DownloadEpisode[] = [];
-    let $ = await fetchWebsite(url);
+    let $ = await fetchWebsite(url, {}, otakudesuHeader);
     const getDownloadLinks = (resolution: string): LinkDownload[] => {
       return $(`strong:contains('${resolution}')`)
         .parent()

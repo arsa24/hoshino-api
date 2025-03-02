@@ -1,9 +1,20 @@
-import { AxiosProxyConfig, AxiosRequestConfig, AxiosResponse } from "axios";
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+  RawAxiosRequestHeaders,
+} from "axios";
 import axios from "axios";
 import * as cheerio from "cheerio";
 
-export const fetchWebsite = async (url: string, options: AxiosRequestConfig = {}) => {
-  const response: AxiosResponse = await axios.get(url, options);
+export const fetchWebsite = async (
+  url: string,
+  options: AxiosRequestConfig = {},
+  headers: RawAxiosRequestHeaders = {}
+) => {
+  const response: AxiosResponse = await axios.get(url, {
+    ...options,
+    ...headers,
+  });
   const data = await response.data;
   let $ = cheerio.load(data);
   return $;
