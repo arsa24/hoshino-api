@@ -1,3 +1,5 @@
+import axios from "axios";
+import { load } from "cheerio";
 import { otakudesuHeader } from "../utils/constant";
 import { fetchWebsite } from "../utils/fetch_website";
 
@@ -66,7 +68,13 @@ export class Otakudesu {
 
   async downloadAllEpisodes(url: string): Promise<DownloadAllEpisodes[]> {
     try {
-      const $ = await fetchWebsite(url, {}, otakudesuHeader);
+      const response = await axios.post(
+        url,
+        {},
+        { withCredentials: true, headers: otakudesuHeader }
+      );
+      let data = await response.data;
+      const $ = load(data);
       const result: DownloadAllEpisodes[] = [];
 
       const items = $("div.episodelist").eq(1).find("ul li").toArray();
@@ -89,8 +97,14 @@ export class Otakudesu {
   }
 
   async downloadEpisode(url: string): Promise<DownloadEpisode[]> {
+    const response = await axios.post(
+      url,
+      {},
+      { withCredentials: true, headers: otakudesuHeader }
+    );
+    let data = await response.data;
+    const $ = load(data);
     let result: DownloadEpisode[] = [];
-    let $ = await fetchWebsite(url, {}, otakudesuHeader);
     const getDownloadLinks = (resolution: string): LinkDownload[] => {
       return $(`strong:contains('${resolution}')`)
         .parent()
