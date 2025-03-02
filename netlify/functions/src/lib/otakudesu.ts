@@ -83,8 +83,8 @@ export class Otakudesu {
         const title = $(e).find("span a").text().trim();
 
         if (episodeUrl) {
-          const downloads = await this.downloadEpisode(episodeUrl);
-          result.push({ title, downloads });
+          // const downloads = await this.downloadEpisode(episodeUrl);
+          result.push({ title });
         } else {
           console.error(`Invalid episode URL at index ${i}`);
         }
