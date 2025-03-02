@@ -82,12 +82,12 @@ export class Otakudesu {
         const episodeUrl = $(e).find("span a").attr("href")?.trim() ?? "";
         const title = $(e).find("span a").text().trim();
 
-        if (episodeUrl) {
-          // const downloads = await this.downloadEpisode(episodeUrl);
-          result.push({ title });
-        } else {
-          console.error(`Invalid episode URL at index ${i}`);
-        }
+        // if (episodeUrl) {
+        //   // const downloads = await this.downloadEpisode(episodeUrl);
+        // } else {
+        //   console.error(`Invalid episode URL at index ${i}`);
+        // }
+        result.push({ title, episodeUrl });
       }
       return result;
     } catch (error) {

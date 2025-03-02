@@ -18,6 +18,7 @@ interface Search {
 
 interface DownloadAllEpisodes {
   title: string;
+  episodeUrl: string;
   // downloads: DownloadEpisode[];
 }
 
