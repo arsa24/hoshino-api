@@ -65,22 +65,27 @@ export class Otakudesu {
   }
 
   async downloadAllEpisodes(url: string): Promise<DownloadAllEpisodes[]> {
-    const $ = await fetchWebsite(url, {}, otakudesuHeader);
-    const result: DownloadAllEpisodes[] = [];
+    try {
+      const $ = await fetchWebsite(url, {}, otakudesuHeader);
+      const result: DownloadAllEpisodes[] = [];
 
-    const items = $("div.episodelist").eq(1).find("ul li").toArray();
-    for (const [i, e] of items.entries()) {
-      const episodeUrl = $(e).find("span a").attr("href")?.trim() ?? "";
-      const title = $(e).find("span a").text().trim();
+      const items = $("div.episodelist").eq(1).find("ul li").toArray();
+      for (const [i, e] of items.entries()) {
+        const episodeUrl = $(e).find("span a").attr("href")?.trim() ?? "";
+        const title = $(e).find("span a").text().trim();
 
-      if (episodeUrl) {
-        const downloads = await this.downloadEpisode(episodeUrl);
-        result.push({ title, downloads });
-      } else {
-        console.error(`Invalid episode URL at index ${i}`);
+        if (episodeUrl) {
+          const downloads = await this.downloadEpisode(episodeUrl);
+          result.push({ title, downloads });
+        } else {
+          console.error(`Invalid episode URL at index ${i}`);
+        }
       }
+      return result;
+    } catch (error) {
+      console.error(`Failed to download episodes from ${url}`, error);
+      return [];
     }
-    return result;
   }
 
   async downloadEpisode(url: string): Promise<DownloadEpisode[]> {

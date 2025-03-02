@@ -13,7 +13,7 @@ export const fetchWebsite = async (
 ) => {
   const response: AxiosResponse = await axios.get(url, {
     ...options,
-    ...headers,
+    headers: { ...headers },
   });
   const data = await response.data;
   let $ = cheerio.load(data);
